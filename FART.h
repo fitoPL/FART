@@ -2,14 +2,17 @@
 #include<stdlib.h>
 #include<string.h>
 
-struct FARTtemplate;
+#ifndef _FART_H
+#define _FART_H 1 
+
+//struct FARTtemplate; 
 
 typedef struct 
 {
   float *data;
   char *label;
   int size;
-  struct FARTtemplate *next; 
+  struct _FARTtemplate *next; 
 }FARTtemplate; 
 
 typedef struct
@@ -27,5 +30,5 @@ float FART_choice_function(FARTtemplate*, FARTtemplate*,float);
 int   FART_vigilance_match(FARTtemplate*,FARTtemplate*,float);
 void FART_learn(FARTtemplate*,FARTtemplate*,float);
 int FART_classify(float*,int, FART*);
-void FART_dump(FART, int,unsigned short int);
-
+void FART_dump(FART, int);
+#endif 

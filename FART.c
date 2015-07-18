@@ -158,14 +158,12 @@ int FART_classify (float *input,int size,  FART *net)
 
 }
 
-void FART_dump(FART net, int data, unsigned short int printCells)
+void FART_dump(FART net, int data)
 {
   FARTtemplate *iterator = net.templates; 
   int i;
   printf("number of templates:%i\n", net.size);
   printf("cells per template:%i\n", net.templates->size);
-  if (! printCells)
-    return;
   if (!data)
     return;
   while(iterator)

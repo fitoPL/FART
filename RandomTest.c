@@ -26,5 +26,5 @@ int main()
   }
   fclose(fd);
   printf("max=%f\n",max);
-  FART_dump(net,1,0);
+  FART_dump(net,1);
 }
