@@ -31,6 +31,6 @@ int   FART_vigilance_match(FARTtemplate*,FARTtemplate*,float);
 void  FART_learn(FARTtemplate*,FARTtemplate*,float);
 int   FART_classify(float*,int, FART*);
 void  FART_dump(FART, int);
-int   FART_store(FART *, char*);
-int   FART_load (FART **,char*); 
+int   FART_store(FART *, const char*);
+int   FART_load (FART **,const char*); 
 #endif 

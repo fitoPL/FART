@@ -165,6 +165,7 @@ void FART_dump(FART net, int data)
   int i;
   printf("number of templates:%i\n", net.size);
   printf("cells per template:%i\n", net.templates->size);
+  printf("ALPHA: %f, BETA: %f, RHO %f\n",net.alpha, net.beta, net.rho);
   if (!data)
     return;
   while(iterator)
@@ -177,13 +178,13 @@ void FART_dump(FART net, int data)
   }
 }
 
-int FART_store(FART *net, char *path)
+int FART_store(FART *net, const char *path)
 {
   FILE *fd = fopen(path, "w");
   FARTtemplate *iterator = net->templates;
   if(!fd)
     return 0;
-  fwrite(net, sizeof(net),1, fd);
+  fwrite(net, sizeof(FART),1, fd);
   while(iterator)
   {
     fwrite(iterator, sizeof(FARTtemplate),1,fd); 
@@ -194,7 +195,7 @@ int FART_store(FART *net, char *path)
   return 1;
 }
 
-int FART_load(FART **_net, char *path)
+int FART_load(FART **_net, const  char *path)
 {
   FILE *fd = fopen(path, "r");
   int i;
@@ -207,7 +208,7 @@ int FART_load(FART **_net, char *path)
   }
   net = (FART *) malloc(sizeof(FART));
   //printf("file is open correctly\n");
-  fread(net, sizeof(net),1, fd);
+  fread(net, sizeof(FART),1, fd);
   //printf("reading first structure\m");
   for(int i=0; i != net->size; i++)
   {
