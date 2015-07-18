@@ -9,15 +9,13 @@ int main()
   int i=0,j;
   float s1[cells];
   char data[cells+1];
-  float max=0; 
 
   fd = fopen("/dev/urandom","r");
-  for(i=0;i!=1000;i++)
+  for(i=0;i!=300;i++)
   {
     fgets(&data,cells,fd);
     for(j=0; j!= cells;j++)
     {
-      max = max > (float)(data[j]) ? max : (float)(data[j]); 
       s1[j] = (float)(data[j])/127; 
       s1[j] = s1[j] >= 0 ? s1[j] : -s1[j];
     }
@@ -25,6 +23,7 @@ int main()
     FART_classify((float *)&s1 ,sizeof(s1)/sizeof(float), &net);   
   }
   fclose(fd);
-  printf("max=%f\n",max);
   FART_dump(net,1);
+  FART_store(&net, "trainedTest.raw");
+
 }

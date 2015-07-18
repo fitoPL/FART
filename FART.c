@@ -149,6 +149,7 @@ int FART_classify (float *input,int size,  FART *net)
       iterator->data = input;
       iterator->size = size;
       iterator->next = 0;
+      iterator->label = net->size;
       net->size++;
       break; 
     }
@@ -174,6 +175,66 @@ void FART_dump(FART net, int data)
     printf("\n]\n");
     iterator = iterator->next;
   }
+}
+
+int FART_store(FART *net, char *path)
+{
+  FILE *fd = fopen(path, "w");
+  FARTtemplate *iterator = net->templates;
+  if(!fd)
+    return 0;
+  fwrite(net, sizeof(net),1, fd);
+  while(iterator)
+  {
+    fwrite(iterator, sizeof(FARTtemplate),1,fd); 
+    fwrite(iterator->data,sizeof(float), iterator->size,fd);
+    iterator=iterator->next;
+  }
+  fclose(fd);
+  return 1;
+}
+
+int FART_load(FART **_net, char *path)
+{
+  FILE *fd = fopen(path, "r");
+  int i;
+  FART *net;
+  FARTtemplate *iterator = 0; 
+  if(!fd)
+  {
+    net = 0;
+    return 0;
+  }
+  net = (FART *) malloc(sizeof(FART));
+  //printf("file is open correctly\n");
+  fread(net, sizeof(net),1, fd);
+  //printf("reading first structure\m");
+  for(int i=0; i != net->size; i++)
+  {
+    if (i==0)
+    {
+      net->templates = (FARTtemplate*)malloc(sizeof(FARTtemplate));
+      fread(net->templates, sizeof(FARTtemplate),1,fd); 
+      iterator = net->templates;
+      //printf("first templeate correctly read\n");
+    }else
+    {
+      iterator->next = (FARTtemplate*)malloc(sizeof(FARTtemplate));
+      fread(iterator->next, sizeof(FARTtemplate),1,fd);
+      iterator = iterator->next; 
+
+      //printf("first template number %i read\n", i);  
+    }
+    iterator->data = (float*) malloc(sizeof(float) * iterator->size);
+    fread(iterator->data, sizeof(float), iterator->size, fd);
+
+  }
+  iterator->next = 0;
+  fclose(fd);
+  *_net = net;
+  return 0;
 
 }
+
+
 
