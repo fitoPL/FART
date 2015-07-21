@@ -5,12 +5,14 @@
 #ifndef _FART_H
 #define _FART_H 1 
 
+#define LEARN_MODE 1
+#define ONLY_CLASSIFY__MODE  0
+
 //struct FARTtemplate; 
 
 typedef struct 
 {
   float *data;
-  int  label;
   int size;
   struct _FARTtemplate *next; 
 }FARTtemplate; 
@@ -29,7 +31,7 @@ float FART_norm(FARTtemplate *);
 float FART_choice_function(FARTtemplate*, FARTtemplate*,float);
 int   FART_vigilance_match(FARTtemplate*,FARTtemplate*,float);
 void  FART_learn(FARTtemplate*,FARTtemplate*,float);
-int   FART_classify(float*,int, FART*);
+int   FART_classify(float*,int, FART*,int);
 void  FART_dump(FART, int);
 int   FART_store(FART *, const char*);
 int   FART_load (FART **,const char*); 

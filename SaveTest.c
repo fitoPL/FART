@@ -20,7 +20,7 @@ int main()
       s1[j] = s1[j] >= 0 ? s1[j] : -s1[j];
     }
     //printf("%f=, %f=\n", s1[0], s1[1]);
-    FART_classify((float *)&s1 ,sizeof(s1)/sizeof(float), &net);   
+    FART_classify((float *)&s1 ,sizeof(s1)/sizeof(float), &net,1);   
   }
   fclose(fd);
   FART_dump(net,1);

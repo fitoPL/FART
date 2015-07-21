@@ -72,7 +72,7 @@ void FART_learn(FARTtemplate *input, FARTtemplate *t, float beta)
 }
 
 
-int FART_classify (float *input,int size,  FART *net)
+int FART_classify (float *input,int size,  FART *net, int learnMode)
 {
   float maxClass=0,cmp,*ninput=0,*aux;
   int nsize,_class,choice=0,classCounter=0;
@@ -116,7 +116,7 @@ int FART_classify (float *input,int size,  FART *net)
   while(iterator) 
   {
     cmp = FART_choice_function(&tmp,iterator, net->alpha);
-    if (cmp > maxClass)
+    if (cmp > maxClass )
     {
        maxClass = cmp; 
        choice = classCounter; 
@@ -125,6 +125,9 @@ int FART_classify (float *input,int size,  FART *net)
     classCounter++;
     iterator = iterator->next;
   }
+  
+  if (!learnMode)
+    return choice;
 
   iterator = net->templates; 
   while(iterator)
@@ -146,10 +149,10 @@ int FART_classify (float *input,int size,  FART *net)
       nsize = iterator->size;
       iterator->next = malloc(sizeof(FARTtemplate));
       iterator = iterator->next; 
-      iterator->data = input;
+      iterator->data = (float *) malloc( sizeof(float)*nsize);
+      memcpy(iterator->data, input, sizeof(float)*nsize);
       iterator->size = size;
       iterator->next = 0;
-      iterator->label = net->size;
       net->size++;
       break; 
     }
